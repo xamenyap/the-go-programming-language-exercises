@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -27,9 +28,34 @@ func (d dollars) String() string { return fmt.Sprintf("$%.2f", d) }
 
 type database map[string]dollars
 
+const listTpl = `
+<html>
+<h1>Items</h1>
+<table>
+	<tr>
+		<th style="border:1px solid #dddddd; text-align: left; padding: 8px;">Item</th>
+		<th style="border:1px solid #dddddd; text-align: left; padding: 8px;">Price</th>
+	</tr>
+	{{range $item, $price := .}} 
+		<tr>
+			<td style="border:1px solid #dddddd; text-align: left; padding: 8px;">{{$item}}</td>
+			<td style="border:1px solid #dddddd; text-align: left; padding: 8px;">{{$price}}</td>
+		</tr>
+	{{else}}
+		<tr>
+			<td style="border:1px solid #dddddd; text-align: left; padding: 8px;" colspan="2">No items</td>
+		</tr>
+	{{end}}
+</table>
+</html>
+`
+
 func (db database) list(w http.ResponseWriter, req *http.Request) {
-	for item, price := range db {
-		_, _ = fmt.Fprintf(w, "%s: %s\n", item, price)
+	tpl := template.Must(template.New("list").Parse(listTpl))
+
+	if err := tpl.Execute(w, db); err != nil {
+		w.WriteHeader(http.StatusNotFound) // 404
+		_, _ = fmt.Fprintf(w, "error: %v\n", err)
 	}
 }
 
