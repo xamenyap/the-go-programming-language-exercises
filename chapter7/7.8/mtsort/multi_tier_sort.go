@@ -12,12 +12,9 @@ type Track struct {
 	Length time.Duration
 }
 
-type compareFunc func(x, y *Track) bool
-
 type tier struct {
-	name      string
-	lessFunc  compareFunc
-	equalFunc compareFunc
+	name     string
+	lessFunc func(x, y *Track) bool
 }
 
 var (
@@ -26,17 +23,11 @@ var (
 		lessFunc: func(x, y *Track) bool {
 			return x.Title < y.Title
 		},
-		equalFunc: func(x, y *Track) bool {
-			return x.Title == y.Title
-		},
 	}
 	artistTier = tier{
 		name: "artist",
 		lessFunc: func(x, y *Track) bool {
 			return x.Artist < y.Artist
-		},
-		equalFunc: func(x, y *Track) bool {
-			return x.Artist == y.Artist
 		},
 	}
 	albumTier = tier{
@@ -44,26 +35,17 @@ var (
 		lessFunc: func(x, y *Track) bool {
 			return x.Album < y.Album
 		},
-		equalFunc: func(x, y *Track) bool {
-			return x.Album == y.Album
-		},
 	}
 	yearTier = tier{
 		name: "year",
 		lessFunc: func(x, y *Track) bool {
 			return x.Year < y.Year
 		},
-		equalFunc: func(x, y *Track) bool {
-			return x.Year == y.Year
-		},
 	}
 	lengthTier = tier{
 		name: "length",
 		lessFunc: func(x, y *Track) bool {
 			return x.Length < y.Length
-		},
-		equalFunc: func(x, y *Track) bool {
-			return x.Length == y.Length
 		},
 	}
 )
@@ -78,8 +60,12 @@ func (s MultiTierSort) Len() int {
 }
 
 func (s MultiTierSort) Less(i, j int) bool {
+	// prioritize tiers by order
+	// if tracks[i] and tracks[j] are not equal, determine if we should swap using the less function of the current tier
+	// otherwise, proceed to the next tier
 	for _, t := range s.tiers {
-		if !t.equalFunc(s.tracks[i], s.tracks[j]) {
+		equal := !t.lessFunc(s.tracks[i], s.tracks[j]) && !t.lessFunc(s.tracks[j], s.tracks[i])
+		if !equal {
 			return t.lessFunc(s.tracks[i], s.tracks[j])
 		}
 	}
