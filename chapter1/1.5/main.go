@@ -20,7 +20,7 @@ var green = color.RGBA{
 var palette = []color.Color{green, color.Black}
 
 const (
-	whiteIndex = 0 // first color in palette
+	greenIndex = 0 // first color in palette
 	blackIndex = 1 // next color in palette
 )
 
