@@ -6,19 +6,19 @@ import (
 )
 
 func TestComma(t *testing.T) {
-	if comma("12345") != anotherComma("12345") {
+	if comma("12345") != commaUsingBuffer("12345") {
 		t.FailNow()
 	}
 
-	if comma("123456") != anotherComma("123456") {
+	if comma("123456") != commaUsingBuffer("123456") {
 		t.FailNow()
 	}
 
-	if comma("123") != anotherComma("123") {
+	if comma("123") != commaUsingBuffer("123") {
 		t.FailNow()
 	}
 
-	if comma("1") != anotherComma("1") {
+	if comma("1") != commaUsingBuffer("1") {
 		t.FailNow()
 	}
 }
@@ -29,8 +29,8 @@ func BenchmarkComma(b *testing.B) {
 	}
 }
 
-func BenchmarkAnotherComma(b *testing.B) {
+func BenchmarkCommaUsingBuffer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = anotherComma(strconv.Itoa(i))
+		_ = commaUsingBuffer(strconv.Itoa(i))
 	}
 }

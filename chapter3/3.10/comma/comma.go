@@ -12,7 +12,7 @@ func comma(s string) string {
 	return comma(s[:n-3]) + "," + s[n-3:]
 }
 
-func anotherComma(s string) string {
+func commaUsingBuffer(s string) string {
 	commaPos := make(map[int]struct{})
 	cur := 0
 	for i := len(s) - 1; i >= 0; i-- {
