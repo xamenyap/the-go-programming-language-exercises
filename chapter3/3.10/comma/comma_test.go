@@ -3,24 +3,15 @@ package comma
 import (
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestComma(t *testing.T) {
-	if comma("12345") != commaUsingBuffer("12345") {
-		t.FailNow()
-	}
-
-	if comma("123456") != commaUsingBuffer("123456") {
-		t.FailNow()
-	}
-
-	if comma("123") != commaUsingBuffer("123") {
-		t.FailNow()
-	}
-
-	if comma("1") != commaUsingBuffer("1") {
-		t.FailNow()
-	}
+	assert.Equal(t, comma("12345"), commaUsingBuffer("12345"))
+	assert.Equal(t, comma("123456"), commaUsingBuffer("123456"))
+	assert.Equal(t, comma("123"), commaUsingBuffer("123"))
+	assert.Equal(t, comma("1"), commaUsingBuffer("1"))
 }
 
 func BenchmarkComma(b *testing.B) {
