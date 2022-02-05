@@ -18,4 +18,8 @@ func TestReverse(t *testing.T) {
 	b3 := []byte("\r\rcây bàng ơi, toả bóng tháng năm dài\n")
 	Reverse(b3)
 	assert.Equal(t, []byte("\niàd măn gnáht gnób ảot ,iơ gnàb yâc\r\r"), b3)
+
+	b4 := []byte("平仮名")
+	Reverse(b4)
+	assert.Equal(t, []byte("名仮平"), b4)
 }
