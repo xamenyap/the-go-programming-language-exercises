@@ -14,4 +14,8 @@ func TestRotate(t *testing.T) {
 	s2 := []int{9, 4, 6, 2}
 	Rotate(s2, 1)
 	assert.Equal(t, []int{4, 6, 2, 9}, s2)
+
+	s3 := []int{1, 2}
+	Rotate(s3, 1)
+	assert.Equal(t, []int{2, 1}, s3)
 }
