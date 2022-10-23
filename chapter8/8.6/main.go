@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 	"time"
 
 	"golang.org/x/net/html"
@@ -26,8 +25,6 @@ var c = http.Client{
 
 func main() {
 	worklist := make(chan url)
-	var wg sync.WaitGroup
-	wg.Add(len(os.Args[1:]))
 
 	var n int
 	n = n + len(os.Args[1:])
